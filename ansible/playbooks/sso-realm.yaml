@@ -123,7 +123,7 @@
         echo $(cat {{ work_dir }}/key.pem | tr -d "\n" | sed 's/-----BEGIN PUBLIC KEY-----//' | sed 's/-----END PUBLIC KEY-----//' ) > {{ work_dir }}/sso_public_key.txt
         rm {{ work_dir }}/*.bin {{ work_dir }}/*.der {{ work_dir }}/*.pem
       vars:
-        shell1: !unsafe "$((${#_m} % 4))"
+        shell1: '!unsafe "$((${#_m} % 4))"'
 
     - name: create client configmap
       k8s:
