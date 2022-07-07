@@ -1,0 +1,24 @@
+---
+- name: Deploy SSO Realm
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  run_once: true
+  vars_files:
+    - group_vars/all.yml
+    - group_vars/tools.yml
+
+  tasks:
+    - name: wait for sso to be ready
+      kubernetes.core.k8s_info:
+        kind: Statefulset
+        name: keycloak
+        namespace: "{{ namespace_sso }}"
+        wait_sleep: 10
+        wait_timeout: 90
+
+
+    - name: "Define random value for variable siteadmin_role_id "
+      set_fact:
+        siteadmin_role_id: "{{ lookup('password', '/dev/null chars=ascii_letters length=32') }}"
+
