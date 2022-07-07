@@ -9,6 +9,9 @@
     - group_vars/tools.yml
 
   tasks:
+    - name: print start time
+      shell: uptime
+      
     - name: wait for sso to be ready
       kubernetes.core.k8s_info:
         kind: Statefulset
