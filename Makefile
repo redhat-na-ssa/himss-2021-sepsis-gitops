@@ -10,8 +10,6 @@ help:
 	make -f common/Makefile $*
 
 install: deploy ## installs the pattern, inits the vault and loads the secrets
-	make vault-init
-	make load-secrets
 	echo "Installed"
 
 common-test:
