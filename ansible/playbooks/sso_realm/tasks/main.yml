@@ -1,8 +1,9 @@
 ---
 - name: Install collections.general
-  community.general.ansible_galaxy_install:
-     type: collection
-     name: community.general
+  shell: ansible-galaxy collection install community.general
+  register: result
+- debug:
+    msg: "Shell output : {{result}}"  
 
 - name: wait for sso to be ready
   kubernetes.core.k8s_info:
