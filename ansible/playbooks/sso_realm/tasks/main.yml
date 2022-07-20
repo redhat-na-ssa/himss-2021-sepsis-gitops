@@ -1,5 +1,11 @@
 ---
 
+- name: Verify Collection is available
+  shell: ansible-galaxy collection list | grep general
+  register: result
+- debug:
+    msg: "Shell output : {{result}}"
+
 - name: wait for sso to be ready
   kubernetes.core.k8s_info:
     kind: Statefulset
