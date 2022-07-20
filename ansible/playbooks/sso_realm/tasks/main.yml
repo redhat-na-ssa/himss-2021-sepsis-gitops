@@ -1,7 +1,7 @@
 ---
 
 - name: Verify Collection is available
-  shell: ansible-galaxy collection list | grep general
+  shell: ansible-galaxy collection list
   register: result
 - debug:
     msg: "Shell output : {{result}}"
