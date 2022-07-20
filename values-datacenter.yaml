@@ -30,6 +30,7 @@ clusterGroup:
          path: charts/all/sepsis-demo/sso
       
     imperative:
+      image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
       # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
       # The default schedule is every 10 minutes: imperative.schedule
       # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds
