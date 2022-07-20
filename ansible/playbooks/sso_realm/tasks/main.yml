@@ -130,8 +130,8 @@
     shell1: !unsafe "$((${#_m} % 4))"
   register: result_sso_realm_certs_exponent   
 
-  -debug:
-    msg: {{ result_sso_realm_certs_exponent }}
+- debug:
+  msg: "result_sso_realm_certs_exponent : {{result_sso_realm_certs_exponent}}"
 
 - name: create client configmap
   k8s:
