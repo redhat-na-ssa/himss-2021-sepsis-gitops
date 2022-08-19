@@ -31,5 +31,5 @@ items:
    labels:
       app: {{.Values.plsql.psql_app_name}}   
    data:
-      create_database.sh: |
+      create_database.sh: |-
          {{ .Files.Get (printf "sql/create_database.sh") | quote | indent 6}}
