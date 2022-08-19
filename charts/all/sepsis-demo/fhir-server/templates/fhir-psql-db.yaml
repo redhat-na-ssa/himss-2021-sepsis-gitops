@@ -20,4 +20,17 @@ items:
  - kind: ServiceAccount       
    apiVersion: v1
    metadata:
-        name: {{ .Values.plsql.postgresql_service_account }} 
+        name: {{ .Values.plsql.postgresql_service_account }}
+   labels:
+      app: {{.Values.plsql.psql_app_name}}      
+
+ - kind: ConfigMap     
+   apiVersion: v1
+   metadata:
+      name: {{ .Values.configmap.postgres_configmap.name  }}
+   labels:
+      app: {{.Values.plsql.psql_app_name}}   
+   data:
+      create_database.sh: {{ .Values.configmap.postgres_configmap.create_db_file }}
+      wait_for_postgresql.sh: {{ .Values.configmap.postgres_configmap.wait_for_psql_file }}
+     
