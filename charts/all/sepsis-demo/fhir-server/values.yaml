@@ -3,9 +3,9 @@ plsql:
   psql_app_name: psql-fhir
   postgresql_pv_capacity: 5Gi
   postgresql_service_account: fhir-service-user
-  
+
 configmap:
   postgres_configmap:
     name : fhir-postgres-cm
-    create_db_file: ./sql/create_database.sh
-    wait_for_psql_file: ./sql/wait_for_postgresql.sh
+    create_db_file: sql/create_database.sh
+    wait_for_psql_file: sql/wait_for_postgresql.sh

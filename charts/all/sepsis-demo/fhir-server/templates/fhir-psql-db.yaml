@@ -32,4 +32,10 @@ items:
       app: {{.Values.plsql.psql_app_name}}   
    data:
       create_database.sh: |-
-         {{ .Files.Get (printf "sql/create_database.sh") | quote | indent 6}}
+        {{ range .Files.Lines .Values.configmap.postgres_configmap.create_db_file }}
+            {{ . }}
+        {{ end }}
+      wait_for_postgresql.sh: |-   
+        {{ range .Files.Lines .Values.configmap.postgres_configmap.wait_for_psql_file }}
+            {{ . }}
+        {{ end }}
