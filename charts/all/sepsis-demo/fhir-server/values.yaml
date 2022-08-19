@@ -9,3 +9,6 @@ configmap:
     name : fhir-postgres-cm
     create_db_file: sql/create_database.sh
     wait_for_psql_file: sql/wait_for_postgresql.sh
+  debezium_configmap:
+    name : fhir-debezium-cm  
+    d_conf_file: sql/hapi-psql-debezium-conf.conf

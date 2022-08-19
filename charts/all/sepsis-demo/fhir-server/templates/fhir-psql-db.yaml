@@ -39,3 +39,15 @@ items:
         {{ range .Files.Lines .Values.configmap.postgres_configmap.wait_for_psql_file }}
             {{ . }}
         {{ end }}
+
+ - kind: ConfigMap       
+   apiVersion: v1
+   metadata:
+      name: {{ .Values.configmap.debezium_configmap.name  }}
+      labels:
+            app: {{.Values.plsql.psql_app_name}}
+   data:
+      hapi-psql-debezium-conf.conf: |-
+          {{ range .Files.Lines .Values.configmap.debezium_configmap.d_conf_file }}
+            {{ . }}
+          {{ end }}
