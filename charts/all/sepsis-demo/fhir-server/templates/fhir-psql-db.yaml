@@ -1,0 +1,16 @@
+---
+kind: List
+apiVersion: v1
+items:
+ - kind: PersistentVolumeClaim
+   apiVersion: v1
+   metadata:
+    name: {{.Values.plsql.psql_app_name}}
+    labels:
+      app: {{.Values.plsql.psql_app_name}}
+   spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: {{ .Values.plsql.postgresql_pv_capacity }}

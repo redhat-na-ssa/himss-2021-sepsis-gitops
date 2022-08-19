@@ -24,10 +24,14 @@ clusterGroup:
   
     applications:
        sso:
-         name: sepsis-demo
+         name: sso
          namespace: sepsis-demo
          project: sepsis-demo
          path: charts/all/sepsis-demo/sso
+       fhir:
+         name: fhir
+         namespace: sepsis-demo
+         project: sepsis-demo  
       
     imperative:
       image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
