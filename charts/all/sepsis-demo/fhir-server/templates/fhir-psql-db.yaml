@@ -1,6 +1,7 @@
 ---
 kind: List
 apiVersion: v1
+namespace: {{.Values.namespace}} 
 items:
  - kind: PersistentVolumeClaim
    apiVersion: v1
@@ -8,7 +9,7 @@ items:
     name: {{.Values.plsql.psql_app_name}}
     labels:
       app: {{.Values.plsql.psql_app_name}}
-   namespace: {{.Values.namespace}}   
+     
    spec:
     accessModes:
     - ReadWriteOnce
