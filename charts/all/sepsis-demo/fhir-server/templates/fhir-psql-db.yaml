@@ -16,3 +16,8 @@ items:
     resources:
       requests:
         storage: {{ .Values.plsql.postgresql_pv_capacity }}
+
+ - kind: ServiceAccount       
+   apiVersion: v1
+   metadata:
+        name: {{ .Values.plsql.postgresql_service_account }} 
