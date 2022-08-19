@@ -1,3 +1,4 @@
+namespace: sepsis-demo
 plsql:
   psql_app_name: psql-fhir
   postgresql_pv_capacity: 5Gi
