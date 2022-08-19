@@ -32,6 +32,7 @@ clusterGroup:
          name: fhir
          namespace: sepsis-demo
          project: sepsis-demo  
+         path: charts/all/sepsis-demo/fhir-server
       
     imperative:
       image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
