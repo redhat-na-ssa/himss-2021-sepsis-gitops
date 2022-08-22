@@ -51,3 +51,15 @@ items:
           {{ range .Files.Lines .Values.configmap.debezium_configmap.d_conf_file }}
             {{ . }}
           {{ end }}
+
+ - kind: Secret
+   apiVersion: v1
+   metadata:
+        name: {{.Values.plsql.psql_app_name}}
+        labels:
+            app: {{.Values.plsql.psql_app_name}}
+   type: Opaque
+   data:
+        database-user: {{ .Values.plsql.psql_user_name | b64enc }}
+        database-password: {{ .Values.plsql.psql_user_passwd | b64enc }}
+        database-name: {{ .Values.plsql.psql_db_name | b64enc }}
