@@ -8,7 +8,19 @@ plsql:
   psql_user_name: fhir
   psql_user_passwd: fhir
   psql_db_name: fhir
-
+  postgresql_max_prepared_transactions: 100
+  postgresql_max_connections: 100
+  postgresql_init_configmap: psql-fhir-init
+  postgresql_memory_limit: 512Mi
+  postgresql_cpu_limit: 500m
+  postgresql_memory_request: 256Mi
+  postgresql_cpu_request: 100m
+  psql_init_scripts:
+  undeploy_fhir_db: "true"
+  postgresql_version: 12-el8
+  hapi_psql_debezium_conf_name: hapi-psql-debezium-conf
+  hapi_psql_debezium_conf_file: "{{ hapi_psql_debezium_conf_name }}.conf"
+  
 configmap:
   postgres_configmap:
     name : fhir-postgres-cm
