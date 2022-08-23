@@ -1,5 +1,5 @@
 kind: DeploymentConfig
-apiVersion: apps.openshift.io/v1
+apiVersion: v1
 metadata:
   name: {{ .Values.plsql.psql_app_name }}
   labels:
