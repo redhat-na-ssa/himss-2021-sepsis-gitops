@@ -104,10 +104,6 @@ spec:
               mountPath: "/opt/app-root/src/postgresql-cfg/"
         terminationMessagePath: "/dev/termination-log"
         imagePullPolicy: IfNotPresent
-        capabilities: "{}"
-        securityContext:
-            capabilities: {}
-            privileged: false
       volumes:
       - name: {{ printf "%s-data" .Values.plsql.psql_app_name }}
         persistentVolumeClaim:

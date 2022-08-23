@@ -23,7 +23,7 @@ spec:
           volumes:
             - init-volume
         failurePolicy: Abort
-      timeoutSeconds: 30
+      timeoutSeconds: 60
     resources: {}
     type: Recreate
   template:
