@@ -31,7 +31,7 @@ spec:
           kind: ImageStreamTag
           name: postgresql:{{ .Values.plsql.postgresql_version }}
           namespace: {{ .Values.namespace_postgres }}
-        lastTriggeredImage: ""
+        
   - type: ConfigChange
   replicas: 1
   selector:
