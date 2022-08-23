@@ -119,7 +119,7 @@ spec:
         from:
           kind: ImageStreamTag
           name: 'postgresql:12-el8'
-          namespace: sepsis-demo
+          namespace: openshift
         lastTriggeredImage: ''
       type: ImageChange
     - type: ConfigChange
