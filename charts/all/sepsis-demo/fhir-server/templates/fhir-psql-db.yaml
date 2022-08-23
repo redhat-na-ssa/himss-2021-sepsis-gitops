@@ -69,19 +69,19 @@ spec:
               value: admin
             - name: POSTGRESQL_USER
               valueFrom:
-              secretKeyRef:
-                name: {{ .Values.plsql.psql_app_name }}
-                key: database-user
+                secretKeyRef:
+                    name: {{ .Values.plsql.psql_app_name }}
+                    key: database-user
             - name: POSTGRESQL_PASSWORD
               valueFrom:
-              secretKeyRef:
-                name: {{ .Values.plsql.psql_app_name }}
-                key: database-password
+                secretKeyRef:
+                    name: {{ .Values.plsql.psql_app_name }}
+                    key: database-password
             - name: POSTGRESQL_DATABASE
               valueFrom:
-              secretKeyRef:
-                name: {{ .Values.plsql.psql_app_name }}
-                key: database-name
+                secretKeyRef:
+                    name: {{ .Values.plsql.psql_app_name }}
+                    key: database-name
             - name: POSTGRESQL_SERVICE
               value: {{ .Values.plsql.psql_app_name }}
             - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
