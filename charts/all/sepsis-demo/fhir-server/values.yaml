@@ -1,4 +1,5 @@
 namespace: sepsis-demo
+namespace_postgres: openshift
 plsql:
   psql_app_name: psql-fhir
   psql_credentials_secret: psql-secret

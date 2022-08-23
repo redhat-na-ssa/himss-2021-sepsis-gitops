@@ -38,20 +38,20 @@ spec:
             - name: POSTGRESQL_ADMIN_PASSWORD
               value: admin
             - name: POSTGRESQL_USER
-              secretKeyRef:
-                key: database-user
-                name: psql-fhir
-              valueFrom: null
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: psql-fhir
             - name: POSTGRESQL_PASSWORD
-              secretKeyRef:
-                key: database-password
-                name: psql-fhir
-              valueFrom: null
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: psql-fhir
             - name: POSTGRESQL_DATABASE
-              secretKeyRef:
-                key: database-name
-                name: psql-fhir
-              valueFrom: null
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: psql-fhir
             - name: POSTGRESQL_SERVICE
               value: psql-fhir
             - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
