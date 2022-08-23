@@ -1,8 +1,21 @@
 namespace: sepsis-demo
+ocp_domain: cluster-6btzp.6btzp.sandbox1713.opentlc.com
 namespace_postgres: openshift
+
+sepsisdetection:
+   sepsisdetection_ui_app_name: sepsisdetection-ui
+   sepsisdetection_rhpam_app_name: sepsisdetection-rhpam
+   sepsisdetection_rhpam_api_passwd: kieserver
+   sepsisdetection_rhpam_deployment_name: sepsisdetection-kjar
+   sepsisdetection_rhpam_deployment_version: 1.0.0
+   sepsisdetection_rhpam_process_id: sepsisdetection
+
 fhirserver:
    applicationname: fhir-server
-   
+   configmap:
+       name: fhir-server-cm
+       application_file: properties/application.yaml
+
 plsql:
   psql_app_name: psql-fhir
   psql_credentials_secret: psql-secret

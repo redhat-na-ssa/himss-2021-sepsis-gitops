@@ -63,3 +63,24 @@ items:
         database-user: {{ .Values.plsql.psql_user_name | b64enc }}
         database-password: {{ .Values.plsql.psql_user_passwd | b64enc }}
         database-name: {{ .Values.plsql.psql_db_name | b64enc }}
+
+ - kind: Service       
+   apiVersion: v1
+   metadata:
+      name:  {{.Values.plsql.psql_app_name}}
+      annotations:
+        template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+      labels:
+        app:  {{.Values.plsql.psql_app_name}}
+   spec:
+    ports:
+    - name: postgresql
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 0
+    selector:
+      name:  {{.Values.plsql.psql_app_name}}
+    type: ClusterIP
+    sessionAffinity: None
+  

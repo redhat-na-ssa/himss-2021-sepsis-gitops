@@ -20,3 +20,14 @@ items:
       - kind: ServiceAccount
         name: {{ printf "%s-admin" .Values.fhirserver.applicationname }}
         namespace: {{.Values.namespace}}    
+
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+        name: {{ .Values.fhirserver.configmap.name }}
+    data:
+        application.yaml: |- 
+            {{ range .Files.Lines .Values.fhirserver.configmap.application_file }}
+                {{ . }}
+            {{ end }}
+            
