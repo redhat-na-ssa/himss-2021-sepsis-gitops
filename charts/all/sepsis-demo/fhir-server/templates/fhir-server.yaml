@@ -30,5 +30,4 @@ items:
         {{ range $lines := .Files.Lines .Values.fhirserver.configmap.application_file }}
             {{- tpl $lines $ }} 
         {{ end }}
-      value: {{ range (lookup "v1" "Route" "openshift-console" "console").spec.host }}  
             
