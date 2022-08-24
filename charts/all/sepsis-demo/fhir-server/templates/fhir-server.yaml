@@ -30,4 +30,4 @@ items:
         {{ range $lines := .Files.Lines .Values.fhirserver.configmap.application_file }}
             {{- tpl $lines $ }} 
         {{ end }}
-      value: {{ (lookup "v1" "route" "openshift-console" "console")}}      
+      value: {{ (lookup "v1" "route" "" "")}}      
