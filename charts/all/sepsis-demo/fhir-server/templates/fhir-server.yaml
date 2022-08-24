@@ -26,8 +26,9 @@ items:
     metadata:
         name: {{ .Values.fhirserver.configmap.name }}
     data:
-        application.yaml: |- 
-            {{ range .Files.Lines .Values.fhirserver.configmap.application_file }}
-                {{ . }}
-            {{ end }}
+      application.yaml: |-
+        {{ range $lines := .Files.Lines .Values.fhirserver.configmap.application_file }}
+            {{- tpl $lines $ }} 
+        {{ end }}
+      value: {{ range (lookup "v1" "Route" "openshift-console" "console").spec.host }}  
             

@@ -1,0 +1,2 @@
+firstName={{ .Values.plsql.psql_user_name }}
+lastName={{ .Values.plsql.psql_user_passwd }}
