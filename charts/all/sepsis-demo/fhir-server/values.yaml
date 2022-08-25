@@ -1,5 +1,4 @@
 namespace: sepsis-demo
-ocp_domain: cluster-6btzp.6btzp.sandbox1713.opentlc.com
 namespace_postgres: openshift
 
 sepsisdetection:
