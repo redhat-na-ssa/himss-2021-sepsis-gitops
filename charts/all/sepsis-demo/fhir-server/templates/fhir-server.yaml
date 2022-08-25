@@ -167,4 +167,18 @@ items:
                     path: {{ .Values.fhirserver.application_configmap_key }}
                 name: {{ .Values.fhirserver.configmap.name }}
               name: config
-    
+  
+  - kind : Route  
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: {{ .Values.fhirserver.applicationname }}
+    spec:
+      host: {{ .Values.fhirserver.applicationname }}-{{.Values.namespace}}.{{.Values.global.hubClusterDomain}}
+      port:
+        targetPort: http
+      tls:
+        termination: edge
+      to:
+        kind: Service
+        name: {{ .Values.fhirserver.applicationname }}
+      wildcardPolicy: None
