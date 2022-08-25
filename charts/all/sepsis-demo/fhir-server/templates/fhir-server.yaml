@@ -46,6 +46,25 @@ items:
     spec:
        dockerImageRepository: {{ .Values.fhirserver.service_image }}
 
+  - kind: Service
+    apiVersion: v1
+    metadata:
+       name: {{ .Values.fhirserver.applicationname }}
+       labels:
+            app: {{.Values.fhirserver.applicationname}}
+            expose: "true"
+    spec:
+       ports:
+          - name: http
+            port: 8080
+            protocol: TCP
+            targetPort: 8080
+       selector:
+          group: fhir-server
+          app: {{.Values.fhirserver.applicationname}}
+       sessionAffinity: None
+       type: ClusterIP       
+
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
     metadata:
