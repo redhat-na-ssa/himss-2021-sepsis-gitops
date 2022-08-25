@@ -48,7 +48,7 @@ deploy: validate-origin ## deploys the pattern
 	helm install $(NAME) common/install/ $(HELM_OPTS)
 
 upgrade: validate-origin ## runs helm upgrade
-	helm upgrade $(NAME) common/install/ $(HELM_OPTS)
+	helm upgrade $(NAME) common/install/ $(HELM_OPTS) --set global.hubClusterDomain=$(HUBCLUSTER_APPS_DOMAIN)
 
 uninstall: ## runs helm uninstall
 	helm uninstall $(NAME)
