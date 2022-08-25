@@ -7,11 +7,15 @@ items:
     apiVersion: v1
     metadata:
        name: {{ .Values.fhirserver.applicationname }}
+       labels:
+            app:  {{.Values.fhirserver.applicationname}}
 
   - kind: RoleBinding     
     apiVersion: rbac.authorization.k8s.io/v1
     metadata:
         name: {{ printf "%s-admin" .Values.fhirserver.applicationname }}
+        labels:
+            app:  {{.Values.fhirserver.applicationname}}
     roleRef:
         apiGroup: rbac.authorization.k8s.io
         kind: ClusterRole
@@ -25,8 +29,21 @@ items:
     apiVersion: v1
     metadata:
         name: {{ .Values.fhirserver.configmap.name }}
+        labels:
+            app:  {{.Values.fhirserver.applicationname}}
     data:
       application.yaml: |-
         {{ range $lines := .Files.Lines .Values.fhirserver.configmap.application_file }}
             {{- tpl $lines $ }} 
-        {{ end }}    
+        {{ end }}
+
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+       name: {{ .Values.fhirserver.applicationname }}
+       labels:
+            app:  {{.Values.fhirserver.applicationname}}
+    spec:
+       dockerImageRepository: {{ .Values.fhirserver.service_image }}
+            
+    
