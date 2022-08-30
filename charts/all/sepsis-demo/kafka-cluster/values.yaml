@@ -1,5 +1,6 @@
 project_name: sepsis-demo
 kafka_cluster: kafka-cluster
+kafka_metrics_configmap : kafka-metrics
 
 zookeeper:
   replicas: 3

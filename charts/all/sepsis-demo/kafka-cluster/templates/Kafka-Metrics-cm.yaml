@@ -1,64 +1,16 @@
-apiVersion: kafka.strimzi.io/v1beta2
-kind: Kafka
+kind: ConfigMap
+apiVersion: v1
 metadata:
+  name: {{ .Values.kafka_metrics_configmap }}
+  namespace: {{ .Values.project_name }}
   labels:
-    argocd.argoproj.io/instance: kafka-cluster
-  name: kafka-cluster
-  namespace: sepsis-demo
-spec:
-  entityOperator:
-    topicOperator:
-      livenessProbe:
-        initialDelaySeconds: 15
-        timeoutSeconds: 5
-      readinessProbe:
-        initialDelaySeconds: 10
-        timeoutSeconds: 5
-      resources:
-        limits:
-          cpu: 500m
-          memory: 500M
-        requests:
-          cpu: 250m
-          memory: 250M
-    userOperator:
-      livenessProbe:
-        initialDelaySeconds: 15
-        timeoutSeconds: 5
-      readinessProbe:
-        initialDelaySeconds: 10
-        timeoutSeconds: 5
-      resources:
-        limits:
-          cpu: ''
-          memory: 250M
-        requests:
-          cpu: 150m
-          memory: 150M
-  kafka:
-    config:
-      inter.broker.protocol.version: 3.1
-      min.insync.replicas: 1
-      offsets.topic.replication.factor: 3
-      transaction.state.log.min.isr: 2
-      transaction.state.log.replication.factor: 3
-    jvmOptions:
-      gcLoggingEnabled: false
-    listeners:
-      - name: plain
-        port: 9092
-        tls: false
-        type: internal
-      - name: tls
-        port: 9093
-        tls: true
-        type: internal
-    livenessProbe:
-      initialDelaySeconds: 45
-      timeoutSeconds: null
-    metrics:
+    app: strimzi
+data:
+    kafka-metrics-config.yml: | 
+      # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics  
       lowercaseOutputName: true
       rules:
+        # Special cases and very specific rules
         - labels:
             clientId: $3
             partition: $5
@@ -183,57 +135,35 @@ spec:
             quantile: 0.$4
           name: kafka_$1_$2_$3
           pattern: 'kafka.(\w+)<type=(.+), name=(.+)><>(\d+)thPercentile'
-          type: GAUGE
-    readinessProbe:
-      initialDelaySeconds: 15
-      timeoutSeconds: 5
-    replicas: 3
-    resources:
-      limits:
-        cpu: '1'
-        memory: 2G
-      requests:
-        cpu: 300m
-        memory: 500M
-    storage:
-      deleteClaim: true
-      size: 5Gi
-      type: persistent-claim
-    version: 3.1.0
-  kafkaExporter:
-    enableSaramaLogging: true
-    groupRegex: .*
-    livenessProbe:
-      initialDelaySeconds: 15
-      timeoutSeconds: 5
-    logging: warn
-    readinessProbe:
-      initialDelaySeconds: 15
-      timeoutSeconds: 5
-    resources:
-      limits:
-        cpu: 500m
-        memory: 128Mi
-      requests:
-        cpu: 200m
-        memory: 64Mi
-    topicRegex: ^topic-.+
-  zookeeper:
-    livenessProbe:
-      initialDelaySeconds: 30
-      timeoutSeconds: 5
-    readinessProbe:
-      initialDelaySeconds: 15
-      timeoutSeconds: 5
-    replicas: 3
-    resources:
-      limits:
-        cpu: 500m
-        memory: 250M
-      requests:
-        cpu: 100m
-        memory: 100M
-    storage:
-      deleteClaim: true
-      size: 1Gi
-      type: persistent-claim
+          type: GAUGE 
+    zookeeper-metrics-config.yml: |      
+        # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics
+        lowercaseOutputName: true
+        rules:
+        # replicated Zookeeper
+        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
+        name: "zookeeper_$2"
+        type: GAUGE
+        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+)><>(\\w+)"
+        name: "zookeeper_$3"
+        type: GAUGE
+        labels:
+            replicaId: "$2"
+        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(Packets\\w+)"
+        name: "zookeeper_$4"
+        type: COUNTER
+        labels:
+            replicaId: "$2"
+            memberType: "$3"
+        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(\\w+)"
+        name: "zookeeper_$4"
+        type: GAUGE
+        labels:
+            replicaId: "$2"
+            memberType: "$3"
+        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+), name3=(\\w+)><>(\\w+)"
+        name: "zookeeper_$4_$5"
+        type: GAUGE
+        labels:
+            replicaId: "$2"
+            memberType: "$3"
