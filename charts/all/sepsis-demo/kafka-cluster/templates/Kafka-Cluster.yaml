@@ -1,0 +1,278 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ .Values.kafka_cluster }}
+spec:
+  kafka:
+    version: {{ .Values.kafka.version }}
+    replicas: {{ .Values.kafka.replicas }}
+    listeners:
+      - name: plain
+        port: {{ .Values.kafka.bootstrap.port }}
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+    resources:
+      requests:
+        cpu: '{{ .Values.kafka.requests.cpu }}'
+        memory: '{{ .Values.kafka.requests.memory }}'
+      limits:
+        cpu: '{{ .Values.kafka.limits.cpu }}'
+        memory: '{{ .Values.kafka.limits.memory }}'
+    livenessProbe:
+      initialDelaySeconds: {{ .Values.kafka.liveness_probe.initial_delay_seconds }}
+      timeoutSeconds: {{ .Values.kafka.liveness_probe.imeout_seconds }}
+    readinessProbe:
+      initialDelaySeconds: {{ .Values.kafka.readiness_probe.initial_delay_seconds }}
+      timeoutSeconds: {{ .Values.kafka.readiness_probe.timeout_seconds }}
+    jvmOptions:
+      gcLoggingEnabled: false
+    {{- if .Values.enable_metrics }}   
+    metrics:
+      lowercaseOutputName: true
+      rules:
+      - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value
+        name: kafka_server_$1_$2
+        type: GAUGE
+        labels:
+          clientId: "$3"
+          topic: "$4"
+          partition: "$5"
+      - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>Value
+        name: kafka_server_$1_$2
+        type: GAUGE
+        labels:
+          clientId: "$3"
+          broker: "$4:$5"
+      - pattern: kafka.server<type=(.+), cipher=(.+), protocol=(.+), listener=(.+), networkProcessor=(.+)><>connections
+        name: kafka_server_$1_connections_tls_info
+        type: GAUGE
+        labels:
+          listener: "$2"
+          networkProcessor: "$3"
+          protocol: "$4"
+          cipher: "$5"
+      - pattern: kafka.server<type=(.+), clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
+        name: kafka_server_$1_connections_software
+        type: GAUGE
+        labels:
+          clientSoftwareName: "$2"
+          clientSoftwareVersion: "$3"
+          listener: "$4"
+          networkProcessor: "$5"
+      - pattern: "kafka.server<type=(.+), listener=(.+), networkProcessor=(.+)><>(.+):"
+        name: kafka_server_$1_$4
+        type: GAUGE
+        labels:
+          listener: "$2"
+          networkProcessor: "$3"
+      - pattern: kafka.server<type=(.+), listener=(.+), networkProcessor=(.+)><>(.+)
+        name: kafka_server_$1_$4
+        type: GAUGE
+        labels:
+          listener: "$2"
+          networkProcessor: "$3"
+      # Some percent metrics use MeanRate attribute
+      # Ex) kafka.server<type=(KafkaRequestHandlerPool), name=(RequestHandlerAvgIdlePercent)><>MeanRate
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)Percent\w*><>MeanRate
+        name: kafka_$1_$2_$3_percent
+        type: GAUGE
+      # Generic gauges for percents
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)Percent\w*><>Value
+        name: kafka_$1_$2_$3_percent
+        type: GAUGE
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)Percent\w*, (.+)=(.+)><>Value
+        name: kafka_$1_$2_$3_percent
+        type: GAUGE
+        labels:
+          "$4": "$5"
+      # Generic per-second counters with 0-2 key/value pairs
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, (.+)=(.+), (.+)=(.+)><>Count
+        name: kafka_$1_$2_$3_total
+        type: COUNTER
+        labels:
+          "$4": "$5"
+          "$6": "$7"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, (.+)=(.+)><>Count
+        name: kafka_$1_$2_$3_total
+        type: COUNTER
+        labels:
+          "$4": "$5"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*><>Count
+        name: kafka_$1_$2_$3_total
+        type: COUNTER
+      # Generic gauges with 0-2 key/value pairs
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+), (.+)=(.+)><>Value
+        name: kafka_$1_$2_$3
+        type: GAUGE
+        labels:
+          "$4": "$5"
+          "$6": "$7"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+)><>Value
+        name: kafka_$1_$2_$3
+        type: GAUGE
+        labels:
+          "$4": "$5"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)><>Value
+        name: kafka_$1_$2_$3
+        type: GAUGE
+      # Emulate Prometheus 'Summary' metrics for the exported 'Histogram's.
+      # Note that these are missing the '_sum' metric!
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+), (.+)=(.+)><>Count
+        name: kafka_$1_$2_$3_count
+        type: COUNTER
+        labels:
+          "$4": "$5"
+          "$6": "$7"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.*), (.+)=(.+)><>(\d+)thPercentile
+        name: kafka_$1_$2_$3
+        type: GAUGE
+        labels:
+          "$4": "$5"
+          "$6": "$7"
+          quantile: "0.$8"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.+)><>Count
+        name: kafka_$1_$2_$3_count
+        type: COUNTER
+        labels:
+          "$4": "$5"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+), (.+)=(.*)><>(\d+)thPercentile
+        name: kafka_$1_$2_$3
+        type: GAUGE
+        labels:
+          "$4": "$5"
+          quantile: "0.$6"
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)><>Count
+        name: kafka_$1_$2_$3_count
+        type: COUNTER
+      - pattern: kafka.(\w+)<type=(.+), name=(.+)><>(\d+)thPercentile
+        name: kafka_$1_$2_$3
+        type: GAUGE
+        labels:
+          quantile: "0.$4"
+    {{- end }}
+    config:
+      offsets.topic.replication.factor: {{ .Values.kafka.offsets_topic_replication_factor }}
+      transaction.state.log.replication.factor: {{ .Values.kafka.transaction_state_log.replication_factor }}
+      transaction.state.log.min.isr: {{ .Values.kafka.transaction_state_log.min_isr }}
+
+      min.insync.replicas: 1
+
+      inter.broker.protocol.version: {{ .Values.kafka.log_message_format_version }}
+    storage:
+      {{- if eq .Values.kafka.storage_type "persistent" }}
+      type: persistent-claim
+      size: {{ .Values.kafka.volume_capacity }}
+      deleteClaim: {{ .Values.kafka.delete_claim }}
+      {{- end }}
+      {{- if eq .Values.kafka.storage_type "ephemeral" }}
+      type: ephemeral
+      {{- end }}
+  zookeeper:
+    replicas: {{ .Values.zookeeper.replicas }}
+    resources:
+      requests:
+        cpu: '{{ .Values.zookeeper.requests.cpu }}'
+        memory: '{{ .Values.zookeeper.requests.memory }}'
+      limits:
+        cpu: '{{ .Values.zookeeper.limits.cpu }}'
+        memory: '{{ .Values.zookeeper.limits.memory }}'
+    readinessProbe:
+      initialDelaySeconds: {{ .Values.zookeeper.readiness_probe.initial_delay_seconds }}
+      timeoutSeconds: {{ .Values.zookeeper.readiness_probe.timeout_seconds }}
+    livenessProbe:
+      initialDelaySeconds: {{ .Values.zookeeper.liveness_probe.initial_delay_seconds }}
+      timeoutSeconds: {{ .Values.zookeeper.liveness_probe.timeout_seconds }}
+    {{- if .Values.enable_metrics }} 
+    metrics:
+      # Inspired by Zookeeper rules
+      # https://github.com/prometheus/jmx_exporter/blob/master/example_configs/zookeeper.yaml
+      lowercaseOutputName: true
+      rules:
+      # replicated Zookeeper
+      - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
+        name: "zookeeper_$2"
+        type: GAUGE
+      - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+)><>(\\w+)"
+        name: "zookeeper_$3"
+        type: GAUGE
+        labels:
+          replicaId: "$2"
+      - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(Packets\\w+)"
+        name: "zookeeper_$4"
+        type: COUNTER
+        labels:
+          replicaId: "$2"
+          memberType: "$3"
+      - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(\\w+)"
+        name: "zookeeper_$4"
+        type: GAUGE
+        labels:
+          replicaId: "$2"
+          memberType: "$3"
+      - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+), name3=(\\w+)><>(\\w+)"
+        name: "zookeeper_$4_$5"
+        type: GAUGE
+        labels:
+          replicaId: "$2"
+          memberType: "$3"
+    {{- end }}
+    storage:
+      {{- if eq .Values.zookeeper.storage_type "persistent" }}
+      type: persistent-claim
+      size: {{ .Values.zookeeper.volume_capacity }}
+      deleteClaim: {{ .Values.zookeeper.delete_claim }}
+      {{- end }}
+      {{- if eq .Values.zookeeper.storage_type "ephemeral" }}
+      type: ephemeral
+      {{- end }}
+  entityOperator:
+    topicOperator:
+      resources:
+        requests:
+          cpu: "{{ .Values.topic.operator.requests.cpu }}"
+          memory: {{ .Values.topic.operator.requests.memory }}
+        limits:
+          cpu: "{{ .Values.topic.operator.limits.cpu }}"
+          memory: {{ .Values.topic.operator.limits.memory }}
+      readinessProbe:
+        initialDelaySeconds: {{ .Values.topic.operator.readiness_probe.initial_delay_seconds }}
+        timeoutSeconds: {{ .Values.topic.operator.readiness_probe.timeout_seconds }}
+      livenessProbe:
+        initialDelaySeconds: {{ .Values.topic.operator.liveness_probe.initial_delay_seconds }}
+        timeoutSeconds: {{ .Values.topic.operator.liveness_probe.timeout_seconds }}
+    userOperator: 
+      resources:
+        requests:
+          cpu: "{{ .Values.user.operator.requests.cpu }}"
+          memory: {{ .Values.user.operator.requests.memory }}
+        limits:
+          cpu: "{{.Values.user.operator.limits_cpu }}"
+          memory: {{.Values.user.operator.limits.memory }}
+      readinessProbe:
+        initialDelaySeconds: {{.Values.user.operator.readiness_probe.initial_delay_seconds }}
+        timeoutSeconds: {{.Values.user.operator.readiness_probe.timeout_seconds }}
+      livenessProbe:
+        initialDelaySeconds: {{.Values.user.operator.liveness_probe.initial_delay_seconds }}
+        timeoutSeconds: {{.Values.user.operator.liveness_probe.timeout_seconds }}
+  kafkaExporter:
+    groupRegex: ".*"
+    topicRegex: "^topic-.+"
+    resources:
+      requests:
+        cpu: 200m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 128Mi
+    logging: warn
+    enableSaramaLogging: true
+    readinessProbe: 
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    livenessProbe: 
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
