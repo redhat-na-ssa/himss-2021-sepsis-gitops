@@ -28,6 +28,11 @@ clusterGroup:
          namespace: sepsis-demo
          project: sepsis-demo
          path: charts/all/sepsis-demo/sso
+       kafka-cluster:
+          name: kafka-cluster
+          namespace: sepsis-demo
+          project: sepsis-demo
+          path: charts/all/sepsis-demo/kafka-cluster  
        fhir:
          name: fhir
          namespace: sepsis-demo
