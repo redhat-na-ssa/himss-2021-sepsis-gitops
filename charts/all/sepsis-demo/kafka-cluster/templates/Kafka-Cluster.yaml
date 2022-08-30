@@ -109,7 +109,7 @@ spec:
           cpu: "{{ .Values.user.operator.requests.cpu }}"
           memory: {{ .Values.user.operator.requests.memory }}
         limits:
-          cpu: "{{.Values.user.operator.limits_cpu }}"
+          cpu: "{{.Values.user.operator.limits.cpu }}"
           memory: {{.Values.user.operator.limits.memory }}
       readinessProbe:
         initialDelaySeconds: {{.Values.user.operator.readiness_probe.initial_delay_seconds }}
