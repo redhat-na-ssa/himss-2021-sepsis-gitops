@@ -19,7 +19,7 @@ kafka_connect:
 
 kafka:
   bootstrap_service: "kafka-cluster-kafka-bootstrap.{{ namespace_kafka_cluster }}.svc"
-  bootstrap_port: 9092
+  bootstrap_port: "9092"
   bootstrap_address: "{{ kafka_bootstrap_service }}:{{ kafka_bootstrap_port }}"
   connect: kafka-connect
   connect_image: quay.io/redhat_naps_da/strimzi-debezium-postgresql:1.7.0-1.5.0.Final
