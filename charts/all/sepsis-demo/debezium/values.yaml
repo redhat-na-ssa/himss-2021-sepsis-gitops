@@ -36,4 +36,18 @@ kafka:
       partitions: 5
       replicas: 3
       config: '{"cleanup.policy": "compact"}'    
-     
+
+database: 
+  hapi:
+    psql_app_name: psql-fhir
+    psql_port: 5432
+    psql_user_name: fhir
+    psql_user_passwd: fhir
+    psql_db_name: fhir
+
+debezium:
+  name: debezium-fhir-server-pgsql
+  schema_whitelist: public
+  db_server_name: fhir
+  table_whitelist: public.hfj_res_ver
+  tasks_max: 1
