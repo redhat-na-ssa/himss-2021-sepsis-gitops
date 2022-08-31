@@ -2,6 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: {{ .Values.kafka.connect }}
+  namespace: {{ .Values.project_name }}
   annotations:
     strimzi.io/use-connector-resources: 'true'
 spec:
