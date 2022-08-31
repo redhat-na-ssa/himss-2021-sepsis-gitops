@@ -1,0 +1,17 @@
+project_name: sepsis-demo
+kafka_cluster: kafka-cluster
+kafka:
+  topics: 
+    - name: kakfa-connect-offsets
+      partitions: 25
+      replicas: 3
+      config: '{"cleanup.policy": "compact"}'
+    - name: kakfa-connect-configs
+      partitions: 1
+      replicas: 3
+      config: '{"cleanup.policy": "compact"}'
+    - name: kakfa-connect-status
+      partitions: 5
+      replicas: 3
+      config: '{"cleanup.policy": "compact"}'    
+     

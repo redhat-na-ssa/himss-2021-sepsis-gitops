@@ -38,6 +38,11 @@ clusterGroup:
          namespace: sepsis-demo
          project: sepsis-demo  
          path: charts/all/sepsis-demo/fhir-server
+       debezium:
+         name: debezium
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/debezium
       
     imperative:
       image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
