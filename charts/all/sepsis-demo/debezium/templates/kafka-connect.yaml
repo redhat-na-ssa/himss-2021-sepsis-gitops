@@ -8,7 +8,7 @@ metadata:
 spec:
   version: {{ .Values.kafka_connect.version }}
   replicas: {{ .Values.kafka_connect.replicas }}
-  bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc.cluster.local" .Values.project_name }}
+  bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc.cluster.local:%s" .Values.project_name  .Values.kafka.bootstrap_port}}
   image: {{ .Values.kafka_connect.image }}
   config:
     group.id: {{ .Values.kafka.connect }}
