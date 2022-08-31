@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Values.project_name }}
   annotations:
     strimzi.io/use-connector-resources: 'true'
+  labels:
+     strimzi.io/cluster: kafka_connect  
 spec:
   version: {{ .Values.kafka_connect.version }}
   replicas: {{ .Values.kafka_connect.replicas }}
