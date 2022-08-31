@@ -1,0 +1,48 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: {{ .Values.kafka.connect }}
+  annotations:
+    strimzi.io/use-connector-resources: 'true'
+spec:
+  version: {{ .Values.kafka_connect.version }}
+  replicas: {{ .Values.kafka_connect.replicas }}
+  bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc" .Values.project_name }}
+  image: {{ .Values.kafka_connect.image }}
+  config:
+    group.id: {{ .Values.kafka.connect }}
+    offset.storage.topic: {{ printf "%s-offsets"  .Values.kafka.connect }}
+    config.storage.topic: {{ printf "%s-configs"  .Values.kafka.connect }}
+    status.storage.topic: {{ printf "%s-status"  .Values.kafka.connect }}
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: false
+    value.converter.schemas.enable: false
+    config.storage.replication.factor: 2
+    offset.storage.replication.factor: 2
+    status.storage.replication.factor: 1
+    topic.creation.enable: "false"
+    topic.creation.default.replication.factor: 3
+    topic.creation.default.partitions: 1
+    topic.creation.default.cleanup.policy: compact
+  resources:
+    requests:
+      cpu: '{{ .Values.kafka_connect.requests.cpu }}'
+      memory: '{{ .Values.kafka_connect.requests.memory }}'
+    limits:
+      cpu: '{{ .Values.kafka_connect.limits.cpu }}'
+      memory: '{{ .Values.kafka_connect.limits.memory }}'
+  livenessProbe:
+    initialDelaySeconds: {{ .Values.kafka_connect.liveness_probe.initial_delay_seconds }}
+    timeoutSeconds: {{ .Values.kafka_connect.liveness_probe.timeout_seconds }}
+  readinessProbe:
+    initialDelaySeconds: {{ .Values.kafka_connect.readiness_probe.initial_delay_seconds }}
+    timeoutSeconds: {{ .Values.kafka_connect.readiness_probe.timeout_seconds }}
+  jvmOptions:
+    gcLoggingEnabled: false
+  metricsConfig:
+    type: jmxPrometheusExporter
+    valueFrom:
+      configMapKeyRef:
+        name: connect-metrics
+        key: metrics-config.yml

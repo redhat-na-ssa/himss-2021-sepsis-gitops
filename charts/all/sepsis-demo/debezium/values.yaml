@@ -1,6 +1,28 @@
 project_name: sepsis-demo
 kafka_cluster: kafka-cluster
+
+kafka_connect:
+  version: "3.1.0"
+  replicas: 1
+  requests:
+    cpu: 100m
+    memory: 250M
+  limits:  
+    cpu: 1
+    memory: 1G
+  liveness_probe:
+    initial_delay_seconds: 45
+    timeout_seconds: 10
+  readiness_probe:  
+    initial_delay_seconds: 15
+    timeout_seconds: 10
+
 kafka:
+  bootstrap_service: "kafka-cluster-kafka-bootstrap.{{ namespace_kafka_cluster }}.svc"
+  bootstrap_port: 9092
+  bootstrap_address: "{{ kafka_bootstrap_service }}:{{ kafka_bootstrap_port }}"
+  connect: kafka-connect
+  connect_image: quay.io/redhat_naps_da/strimzi-debezium-postgresql:1.7.0-1.5.0.Final
   topics: 
     - name: kakfa-connect-offsets
       partitions: 25
