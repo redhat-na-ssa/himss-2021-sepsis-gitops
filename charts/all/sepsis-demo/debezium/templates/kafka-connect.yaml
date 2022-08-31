@@ -44,5 +44,5 @@ spec:
     type: jmxPrometheusExporter
     valueFrom:
       configMapKeyRef:
-        name: connect-metrics
+        name: {{ printf "%s-metrics" .Values.kafka.connect }}
         key: metrics-config.yml
