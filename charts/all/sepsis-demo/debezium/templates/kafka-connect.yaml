@@ -18,13 +18,13 @@ spec:
           - type: zip
             url: https://maven.repository.redhat.com/ga/io/apicurio/apicurio-registry-distro-connect-converter/2.0.3.Final-redhat-00002/apicurio-registry-distro-connect-converter-2.0.3.Final-redhat-00002.zip
           - type: zip
-            url: https://maven.repository.redhat.com/ga/io/debezium/debezium-scripting/1.9.5.Final/debezium-scripting-1.9.5.Final.zip
+            url: https://maven.repository.redhat.com/ga/io/debezium/debezium-scripting/1.9.5.Final-redhat-00001/debezium-scripting-1.9.5.Final-redhat-00001.zip
           - type: jar
             url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy/3.0.11/groovy-3.0.11.jar
           - type: jar
             url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-jsr223/3.0.11/groovy-jsr223-3.0.11.jar
           - type: jar
-            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-json3.0.11/groovy-json-3.0.11.jar
+            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-json/3.0.11/groovy-json-3.0.11.jar
   version: {{ .Values.kafka_connect.version }}
   replicas: {{ .Values.kafka_connect.replicas }}
   bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc:%s" .Values.project_name  .Values.kafka.bootstrap_port}}
