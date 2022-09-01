@@ -2,6 +2,7 @@ project_name: sepsis-demo
 kafka_cluster: kafka-cluster
 
 kafka_connect:
+  image: quay.io/redhat_naps_da/strimzi-debezium-postgresql:1.7.0-1.5.0.Final
   version: "3.1.0"
   replicas: 1
   requests:
