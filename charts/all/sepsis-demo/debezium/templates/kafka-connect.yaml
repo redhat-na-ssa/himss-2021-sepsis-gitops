@@ -9,22 +9,22 @@ spec:
   build:
     output: 
       type: imagestream
-      image: debezium-postgres-connect:latest
+      image: {{ printf "%s:latest" .Values.kafka_connect.imagestream }}
     plugins: 
       - name: debezium-connector-postgres
         artifacts:
           - type: zip
-            url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/1.9.5.Final-redhat-00001/debezium-connector-postgres-1.9.5.Final-redhat-00001-plugin.zip
+            url: {{ .Values.debezium.build.postgres_connector}}
           - type: zip
-            url: https://maven.repository.redhat.com/ga/io/apicurio/apicurio-registry-distro-connect-converter/2.0.3.Final-redhat-00002/apicurio-registry-distro-connect-converter-2.0.3.Final-redhat-00002.zip
+            url: {{ .Values.debezium.build.apicurio }}
           - type: zip
-            url: https://maven.repository.redhat.com/ga/io/debezium/debezium-scripting/1.9.5.Final-redhat-00001/debezium-scripting-1.9.5.Final-redhat-00001.zip
+            url: {{ .Values.debezium.build.debezium_scripting }}
           - type: jar
-            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy/3.0.11/groovy-3.0.11.jar
+            url: {{ .Values.debezium.build.groovy }}
           - type: jar
-            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-jsr223/3.0.11/groovy-jsr223-3.0.11.jar
+            url: {{ .Values.debezium.build.groovy_jsr }}
           - type: jar
-            url: https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-json/3.0.11/groovy-json-3.0.11.jar
+            url: {{ .Values.debezium.build.groovy_json }}
   version: {{ .Values.kafka_connect.version }}
   replicas: {{ .Values.kafka_connect.replicas }}
   bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc:%s" .Values.project_name  .Values.kafka.bootstrap_port}}
