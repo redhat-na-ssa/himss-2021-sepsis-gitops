@@ -16,8 +16,8 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/minScale: {{ .Values.application.knative.min }}
-        autoscaling.knative.dev/maxScale: {{ .Values.application.knative.max }}
+        autoscaling.knative.dev/minScale: '{{ .Values.application.knative.min }}'
+        autoscaling.knative.dev/maxScale: '{{ .Values.application.knative.max }}'
       labels:
         app.kubernetes.io/component: {{ .Values.application.name }}
         app.kubernetes.io/instance: {{ .Values.application.name }}
