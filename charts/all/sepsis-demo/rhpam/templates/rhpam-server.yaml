@@ -31,7 +31,8 @@ items:
     data:
         application.properties: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.application }}
-             {{-  tpl $lines $ | trim }} 
+              {{- $record :=   tpl $lines $ -}}
+              {{- trim $record | indent 6 }}
           {{ end }}
         jbpm-quartz.properties: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.jbpm_quartz }}
