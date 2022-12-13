@@ -31,19 +31,19 @@ items:
     data:
         application.properties: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.application }}
-             {{- tpl $lines $ }} 
+             {{- tpl $lines $}} 
           {{ end }}
         jbpm-quartz.properties: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.jbpm_quartz }}
-             {{- tpl $lines $ }} 
+             {{- tpl $lines $}} 
           {{ end }}
         logback-spring.xml: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.logback_spring }}
-             {{- tpl $lines $ }} 
+             {{- tpl $lines $}} 
           {{ end }}
         sepsisdetection-rhpam.xml: |-
           {{ range $lines := .Files.Lines .Values.configmap.application_configmap.sepsisdetection_rhpam }}
-             {{- tpl $lines $ }} 
+             {{- tpl $lines $}} 
           {{ end }}
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
