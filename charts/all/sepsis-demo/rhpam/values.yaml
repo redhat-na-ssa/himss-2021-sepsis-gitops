@@ -71,7 +71,7 @@ namespace_sso: sepsisdetection-sso
 sso_siteadmin_password: r3dh4t1!
 
 # If set to True, then every user that creates an account in demo will automatically be a "realm-admin"
-sso_url: url
+sso_url: sso-sepsis-demo
 set_realm_admin_as_default: false
 sso_realm_id: "user1-sepsis"
 sso_clientId: sepsisdetection
