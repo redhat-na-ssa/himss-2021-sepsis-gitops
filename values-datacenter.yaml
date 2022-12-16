@@ -72,7 +72,12 @@ clusterGroup:
          name: sepsisdetection-sse
          namespace: sepsis-demo
          project: sepsis-demo  
-         path: charts/all/sepsis-demo/sepsisdetection-sse  
+         path: charts/all/sepsis-demo/sepsisdetection-sse
+       sepsisdetection-ui:
+         name: sepsisdetection-ui
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/sepsisdetection-ui    
 
     imperative:
       image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
