@@ -75,6 +75,7 @@ hapi:
       # cors.allowed_origin=http://localhost:8080,https://localhost:8080,https://fhirtest.uhn.ca
       allowed_origin:
         - '*'
+        - "https://{{ .Values.sepsisdetection.sepsisdetection_ui_app_name }}-{{ .Values.namespace }}.{{ .Values.global.hubClusterDomain }}:443,https://{{ .Values.sepsisdetection.sepsisdetection_rhpam_app_name }}-{{ .Values.namespace }}.{{ .Values.global.hubClusterDomain }}:443"
 
 #    logger:
 #      error_format: 'ERROR - ${requestVerb} ${requestUrl}'
