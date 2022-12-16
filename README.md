@@ -1,5 +1,5 @@
 # Validated Patterns for Sepsis-Detection
-    This project is the Validated patterns implementation for Original [Sepsis Dectection project](https://github.com/redhat-na-ssa/himss-2021-sepsis-gitops).It implements all the components as helm charts and charts are located under (charts/all/sepsis-demo)
+    This project is the Validated patterns implementation for Original [Sepsis Dectection project](https://github.com/redhat-na-ssa/himss-2021-sepsis-gitops)It implements all the components as helm charts and charts are located under (charts/all/sepsis-demo)
 
 ## prerequisites
 
@@ -26,13 +26,13 @@
     helm create <<ChartName>>
    ``` 
 
-   2) Testing the template :
+   3) Testing the template :
 
    ` helm template <<Chart Directory>> `
 
-   3) Edit `values-datacenter.yaml` add the created chart under applications :
+   4) Edit `values-datacenter.yaml` add the created chart under applications :
 
-   4) Commit the changes and push the branch
+   5) Commit the changes and push the branch
        
         ```
             git add .
@@ -40,7 +40,7 @@
             git push
         ```
 
-   5) Update the Cluster
+   6) Update the Cluster
 
       ` make upgrade `         
 
