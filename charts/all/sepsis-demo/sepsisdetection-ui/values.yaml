@@ -15,7 +15,7 @@ sso_clientId: sepsisdetection
 
 sepsisdetection_sse_hostname: sepsisdetection-sse
 fhir_server_application_hostname: "{{ fhir_server_application_name }}-{{ project_name }}.{{ .Values.global.hubClusterDomain }}"
-sso_url: "https://{{ sso_route_cmd.stdout }}"
+sso_url: "https://sso-sepsis-demo"
 patient_viewer_url: "https://demo.healthflow.io/profile/5e3ad7fe-24fa-4dc2-8be5-25554a8efb2c"
 
 sepsisdetection_rhpam_app_name: sepsisdetection-rhpam

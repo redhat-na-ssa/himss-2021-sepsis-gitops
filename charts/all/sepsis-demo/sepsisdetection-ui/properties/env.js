@@ -2,7 +2,7 @@
 (function(window) {
   window._env = window._env || {};
 
-  window._env.KEYCLOAK_URL = "{{ .Values.sso_url }}";
+  window._env.KEYCLOAK_URL = "{{ .Values.sso_url }}.{{ .Values.global.hubClusterDomain }}";
   window._env.SSO_REALM = "{{ .Values.sso_realm_id }}";
   window._env.SSO_CLIENT = "{{ .Values.sso_clientId }}";
   window._env.KIE_SERVER_URL = "https://{{ .Values.sepsisdetection_rhpam_app_name }}-{{ .Values.project_name }}.{{ .Values.global.hubClusterDomain }}";
