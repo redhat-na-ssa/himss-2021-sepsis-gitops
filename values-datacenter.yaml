@@ -24,12 +24,63 @@ clusterGroup:
   
     applications:
        sso:
-         name: sepsis-demo
+         name: sso
          namespace: sepsis-demo
          project: sepsis-demo
          path: charts/all/sepsis-demo/sso
-      
+       kafka-cluster:
+          name: kafka-cluster
+          namespace: sepsis-demo
+          project: sepsis-demo
+          path: charts/all/sepsis-demo/kafka-cluster  
+       fhir:
+         name: fhir
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/fhir-server
+       debezium:
+         name: debezium
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/debezium
+       kafdrop:
+         name: kafdrop
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/kafdrop
+       knative-sepsis: 
+         name: knative-sepsis
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/knative
+       sepsisdetection-ml:
+         name: sepsisdetection-ml
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/sepsisdetection-ml
+       rhpam:
+         name: rhpam
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/rhpam
+       sepsisdetection-risk:
+         name: sepsisdetection-risk
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/sepsisdetection-risk
+       sepsisdetection-sse:
+         name: sepsisdetection-sse
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/sepsisdetection-sse
+       sepsisdetection-ui:
+         name: sepsisdetection-ui
+         namespace: sepsis-demo
+         project: sepsis-demo  
+         path: charts/all/sepsis-demo/sepsisdetection-ui    
+
     imperative:
+      image: quay.io/redhat_naps_da/ansible-execution-image-with-tools
       # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
       # The default schedule is every 10 minutes: imperative.schedule
       # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds

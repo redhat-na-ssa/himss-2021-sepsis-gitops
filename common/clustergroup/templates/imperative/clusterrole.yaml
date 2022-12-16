@@ -17,5 +17,8 @@ rules:
     - get
     - list
     - watch
+    - create
+    - update
+    - patch
 {{- end }}
 {{- end }}
