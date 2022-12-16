@@ -43,7 +43,7 @@
     sso_admin_user: "{{ sso_admin_credentials.resources[0].data.ADMIN_USERNAME  | b64decode }}"
     sso_admin_password: "{{ sso_admin_credentials.resources[0].data.ADMIN_PASSWORD | b64decode }}"
     sso_url: "https://{{ sso_route_cmd.stdout }}"
-    sepsis_ui_route_url: "https://{{ sepsisdetection_ui_app_name }}-{{ project_name }}.{{ ocp_domain }}"
+    sepsis_ui_route_url: "https://{{ sepsisdetection_ui_app_name }}-{{ sepsisui_namespace }}.{{ ocp_domain }}"
 - debug:
     msg: "sso_admin_user = {{ sso_admin_user }}  ;  sso_admin_password = {{ sso_admin_password }}"
 
