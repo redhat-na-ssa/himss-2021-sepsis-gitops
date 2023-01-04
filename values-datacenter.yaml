@@ -92,13 +92,6 @@ clusterGroup:
         # per playbook timeout in seconds
         timeout: 234
         # verbosity: "-v"
-
-      - name: anyuid-previleges
-        # ansible playbook to be run
-        playbook: ansible/playbooks/add-scc.yaml
-        # per playbook timeout in seconds
-        timeout: 234
-        # verbosity: "-v"  
   
     managedClusterGroups:
       region-one:
