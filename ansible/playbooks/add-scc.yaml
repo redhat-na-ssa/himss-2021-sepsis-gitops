@@ -1,0 +1,20 @@
+---
+- name: Add SCC Previleges for Service Accounts
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  run_once: true
+  vars_files:
+    - group_vars/all.yml
+    - group_vars/tools.yml
+    - sso_realm/defaults/main.yml
+    
+  tasks:
+     - name: add scc to "sepsisdetection-risk service"
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-risk -n sepsis-demo"
+
+     - name: add scc to "sepsisdetection-sse service"
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-sse -n sepsis-demo"  
+
+     - name: add scc to "sepsisdetection-rhpam service"
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-rhpam -n sepsis-demo"  
