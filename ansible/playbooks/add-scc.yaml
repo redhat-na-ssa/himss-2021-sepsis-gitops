@@ -9,10 +9,10 @@
     - group_vars/tools.yml
   tasks:
      - name: add scc to "sepsisdetection-risk service"
-       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-risk"
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-risk -n sepsis-demo"
 
      - name: add scc to "sepsisdetection-sse service"
-       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-sse"  
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-sse -n sepsis-demo"  
 
      - name: add scc to "sepsisdetection-rhpam service"
-       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-rhpam"  
+       shell: "{{ openshift_cli }} adm policy add-scc-to-user anyuid -z sepsisdetection-rhpam -n sepsis-demo"  
