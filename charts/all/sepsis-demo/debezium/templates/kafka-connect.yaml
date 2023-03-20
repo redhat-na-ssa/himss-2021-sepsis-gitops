@@ -25,7 +25,7 @@ spec:
             url: {{ .Values.debezium.build.groovy_jsr }}
           - type: jar
             url: {{ .Values.debezium.build.groovy_json }}
-  version: {{ .Values.kafka_connect.version }}
+  #version: {{ .Values.kafka_connect.version }}
   replicas: {{ .Values.kafka_connect.replicas }}
   bootstrapServers: {{ printf "kafka-cluster-kafka-bootstrap.%s.svc:%s" .Values.project_name  .Values.kafka.bootstrap_port}}
   config:
