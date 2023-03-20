@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.project_name }}
 spec:
   kafka:
-    version: {{ .Values.kafka.version }}
+    #version: {{ .Values.kafka.version }}
     replicas: {{ .Values.kafka.replicas }}
     listeners:
       - name: plain
