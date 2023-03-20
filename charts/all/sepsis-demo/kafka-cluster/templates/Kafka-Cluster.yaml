@@ -45,8 +45,9 @@ spec:
       transaction.state.log.min.isr: {{ .Values.kafka.transaction_state_log.min_isr }}
 
       min.insync.replicas: 1
-
-      inter.broker.protocol.version: {{ .Values.kafka.log_message_format_version }}
+      default.replication.factor: 2
+      #inter.broker.protocol.version: {{ .Values.kafka.log_message_format_version }}
+      
     storage:
       {{- if eq .Values.kafka.storage_type "persistent" }}
       type: persistent-claim
