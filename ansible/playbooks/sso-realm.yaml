@@ -30,6 +30,6 @@
     - name: set ocp_domain fact
       set_fact: 
         ocp_domain: "{{ ocp_domain_host.stdout }}"
-      when: ACTION is not defined or ACTION == "install"
+      when: ACTION is not defined or ACTION == "install" 
 
     - include: sso_realm/tasks/main.yml  
