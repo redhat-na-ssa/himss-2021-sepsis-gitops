@@ -14,7 +14,7 @@ project_admin: user1
 # Name of the OCP project to deploy this application to
 project_name: "{{ project_admin }}-sepsisdetection"
 
-sepsisui_namespace: sespis-demo
+sepsisui_namespace: sepsis-demo
 
 
 
